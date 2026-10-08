@@ -1,0 +1,5 @@
+*.sqlite
+*.sqlite-*
+*.sqlite.gz
+*.db
+*.db-*
