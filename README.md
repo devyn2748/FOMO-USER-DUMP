@@ -1,31 +1,31 @@
 # FOMO User Dump
 
-SQLite datasets containing FOMO user profiles, public wallet addresses, balance observations and trade records for exploratory analysis.
+A dataset of **570,897 unique FOMO user profiles**, including public handles, wallet addresses, profile statistics and balance observations.
 
-## Downloads
+## Download
 
-Download the compressed databases from this repository's **Releases** section.
+Download `profiles.sqlite.gz` from this repository's **Releases** section.
 
-| File | Contents | Download size |
-|---|---|---:|
-| `usernames.sqlite.gz` | 570,897 unique user profiles; 570,816 balance observations | 439 MB |
-| `dataset.sqlite.gz` | 86,141 trade events across 71 users; 172,282 token legs | 64 MB |
+- Format: gzip-compressed SQLite
+- Download size: approximately 104 MB
+- Database contents: one table, `profiles`
+- Balance observations: 570,816 users
 
-The trade dataset covers a subset of the user inventory. It is not a complete trade-history dataset for all listed users.
+This release contains **profiles and balances only**. It contains no individual trade records or trade histories.
 
 ## Usage
 
-Extract the `.gz` files and open the resulting `.sqlite` databases with a SQLite-compatible application or library.
+Extract the `.gz` file and open `profiles.sqlite` with a SQLite-compatible application or library.
 
 On Linux or macOS:
 
 ```bash
-gzip -dk usernames.sqlite.gz dataset.sqlite.gz
+gzip -dk profiles.sqlite.gz
 ```
 
-The main data tables are `profiles` in the user database and `users`, `events` and `legs` in the trade database. Join records using FOMO user IDs rather than handles, which can change.
+Use `user_id` to identify users; handles can change. Balance values are stored as decimal strings to preserve precision.
 
-If you downloaded the checksum file, verify the downloads with:
+To verify the download, place the checksum file beside the archive and run:
 
 ```bash
 sha256sum -c db-sharing-SHA256SUMS.txt
@@ -33,11 +33,10 @@ sha256sum -c db-sharing-SHA256SUMS.txt
 
 ## Data notes
 
-- Balances are snapshots, not historical balances at the time of each trade.
+- Balances are snapshots, not historical balances.
 - Reported USD valuations are not independently verified and may include unreliable token prices.
-- Some balances are missing or partially valued. A known subtotal should not be treated as a complete balance.
-- Trade coverage varies by user; records should not be assumed to represent complete lifetime activity.
-- Amounts may be stored as decimal strings to preserve precision.
-- Public handles and wallet addresses are retained, so the datasets are not anonymous.
+- Some valuations are incomplete or missing. `known_holdings_usd` is a subtotal; use `balance_complete` and `balance_observed_at` to interpret it.
+- Profile counters are reported statistics, not verified history totals.
+- Public handles and wallet addresses are retained, so this dataset is not anonymous.
 
-These datasets are intended for research and exploratory analysis. They are not a verified measure of users' wealth or trading performance.
+This dataset is intended for research and exploratory analysis, not as a verified measure of users' wealth.
